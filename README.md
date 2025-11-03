@@ -1,0 +1,1 @@
+# smart-amazon-listing-analyzer
