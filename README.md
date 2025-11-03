@@ -1,1 +1,1 @@
-# smart-amazon-listing-analyzer
+# *`smart-amazon-listing-analyzer`*
