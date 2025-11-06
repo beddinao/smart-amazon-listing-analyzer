@@ -17,8 +17,6 @@ def add_best_practices():
         "Use primary keywords in the product title first 50 characters",
         "Include secondary keywords in bullet points and description",
         "Keep title under 200 characters for mobile optimization",
-        "Use all available image slots with high-quality photos",
-        "Include videos in product listings when possible",
         "Write bullet points that focus on benefits not just features",
         "Use emotional language that connects with customer pain points",
         "Include size charts and measurement guides for apparel",
