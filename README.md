@@ -1,6 +1,6 @@
 # *`smart-amazon-listing-analyzer`*
 
-*full-stack AI application that analyzes Amazon product listings and provides improvement suggestions using ChromaDB vector search and OpenRouter API.*
+*full-stack AI application that analyzes Amazon product listings and provides improvement suggestions.*
 
 ## features
 
