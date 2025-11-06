@@ -1,7 +1,5 @@
 # *`smart-amazon-listing-analyzer`*
 
-**
-
 ## features
 
 - **`AI-Powered Analysis`**: Uses OpenRouter API for intelligent listing evaluation
