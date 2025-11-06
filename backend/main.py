@@ -8,22 +8,22 @@ from dotenv import load_dotenv
 import json
 import asyncio
 
-# Load environment variables
+#load environment variables from .env file
 load_dotenv()
 
 app = FastAPI(title="Smart Amazon Listing Analyzer")
 
-# Get environment variables
+#get api key fomr env
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
 
 if not OPENROUTER_API_KEY:
     raise ValueError("OPENROUTER_API_KEY not found in environment variables")
 
-# CORS middleware
+#CORS middleware, enables frontend-backend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[FRONTEND_URL],
+    allow_origins=[FRONTEND_URL], #next dev server
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -35,22 +35,21 @@ class AnalysisRequest(BaseModel):
 
 @app.post("/analyze")
 async def analyze_listing(request: AnalysisRequest):
-    """Analyze Amazon listing with ChromaDB integration"""
+    #init analyzer with api key
     analyzer = AmazonAnalyzer(OPENROUTER_API_KEY)
+    #call the RAG pipeline
     result = analyzer.analyze_listing(request.product_title, request.product_description)
     return result
 
 @app.post("/analyze-stream")
 async def analyze_listing_stream(request: AnalysisRequest):
-    """Streaming analysis endpoint"""
     analyzer = AmazonAnalyzer(OPENROUTER_API_KEY)
     
     async def generate():
-        # Simulate streaming by yielding chunks
         result = analyzer.analyze_listing(request.product_title, request.product_description)
         
         if result["status"] == "success":
-            # Yield analysis in chunks for streaming effect
+            #simulating streaming by yielding chunks
             if "analysis" in result:
                 yield f"data: {json.dumps({'type': 'analysis', 'content': result['analysis']})}\n\n"
             else:
@@ -73,6 +72,7 @@ async def analyze_listing_stream(request: AnalysisRequest):
 
 @app.get("/health")
 async def health_check():
+    #always for testing
     return {"status": "healthy", "chromadb": "initialized"}
 
 if __name__ == "__main__":

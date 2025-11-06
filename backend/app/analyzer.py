@@ -1,8 +1,8 @@
 from sentence_transformers import SentenceTransformer
-import requests
-import json
 from typing import List, Dict
 from .chroma_setup import collection, embedding_model
+import requests
+import json
 
 class AmazonAnalyzer:
     def __init__(self, openrouter_api_key: str):
@@ -10,21 +10,21 @@ class AmazonAnalyzer:
         self.embedding_model = embedding_model
         
     def get_relevant_best_practices(self, query: str, n_results: int = 5) -> List[str]:
-        """Retrieve relevant best practices from ChromaDB"""
+        #gets relevant best practices from chromadb
         try:
-            # Encode query
+            #convert user query to vector
             query_embedding = self.embedding_model.encode(query).tolist()
             
-            # Query ChromaDB
+            #semantic search in chromadb, find most simliar practice
             results = collection.query(
-                query_embeddings=[query_embedding],
-                n_results=n_results
+                query_embeddings=[query_embedding], #search with query vector
+                n_results=n_results                 #return top n_results matches
             )
             
             return results['documents'][0] if results['documents'] else []
         except Exception as e:
             print(f"Error querying ChromaDB: {e}")
-            # Return default best practices if ChromaDB fails
+            #fallback to hardcoded practices if vector search fails
             return [
                 "Use primary keywords in the product title first 50 characters",
                 "Include secondary keywords in bullet points and description",
@@ -34,12 +34,11 @@ class AmazonAnalyzer:
             ]
     
     def analyze_listing(self, title: str, description: str) -> Dict:
-        """Analyze Amazon listing using OpenRouter and ChromaDB"""
         
-        # Get relevant best practices
+        #1 RETRIEVAL: get relevant practices via vector search
         best_practices = self.get_relevant_best_practices(f"{title} {description}")
         
-        # Create enhanced prompt with best practices
+        #2 AUGMENTATION: build context-rich prompt
         prompt = f"""
         Analyze this Amazon product listing and provide specific, actionable improvement suggestions.
 
@@ -71,7 +70,7 @@ class AmazonAnalyzer:
         Be brutally honest and specific with improvements.
         """
         
-        # Call OpenRouter API
+        #3 GENERATION: call LLM with augmented context
         headers = {
             "Authorization": f"Bearer {self.openrouter_api_key}",
             "Content-Type": "application/json"
@@ -83,10 +82,12 @@ class AmazonAnalyzer:
                 {"role": "user", "content": prompt}
             ],
             "max_tokens": 2000,
-            "temperature": 0.1
+            "temperature": 0.1 #low temp for consistent JSON
         }
         
+
         try:
+            #api call to openrouter
             response = requests.post(
                 "https://openrouter.ai/api/v1/chat/completions",
                 headers=headers,
@@ -98,15 +99,15 @@ class AmazonAnalyzer:
                 result = response.json()
                 analysis_text = result["choices"][0]["message"]["content"]
                 
-                # Parse JSON response
+                #parse JSON response
                 try:
                     analysis_data = json.loads(analysis_text)
-                    # Ensure best_practices_used is always included
+                    #attach RAG context
                     analysis_data["best_practices_used"] = best_practices
                     analysis_data["status"] = "success"
                     return analysis_data
                 except json.JSONDecodeError:
-                    # Fallback if JSON parsing fails
+                    #fallback if LLM doesnot return proper JSON
                     return {
                         "status": "success",
                         "analysis": analysis_text,
