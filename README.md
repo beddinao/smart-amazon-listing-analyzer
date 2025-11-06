@@ -1,5 +1,7 @@
 # *`smart-amazon-listing-analyzer`*
 
+*a basic implementation of retrieval augmented generation (RAG) using a vector database (chromaDB) for semantic search*
+
 ## features
 
 - **`AI-Powered Analysis`**: Uses OpenRouter API for intelligent listing evaluation
