@@ -1,8 +1,5 @@
 #/bin/bash
 
-
-
-# Install the missing overrides module and other ChromaDB dependencies
 pip install overrides==7.7.0
 pip install pypika==0.48.9
 pip install posthog==2.4.2
