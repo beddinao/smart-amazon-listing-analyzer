@@ -1,6 +1,6 @@
 # *`smart-amazon-listing-analyzer`*
 
-*full-stack AI application that analyzes Amazon product listings and provides improvement suggestions.*
+**
 
 ## features
 
