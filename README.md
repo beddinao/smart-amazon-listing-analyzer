@@ -12,16 +12,14 @@
 
 ## stack
 
-**backend:**
 ```
+backend:
 - FastAPI (Python web framework)
 - ChromaDB (vector database for best practices)
 - Sentence Transformers (embeddings for vector search)
 - OpenRouter API (LLM access)
-```
 
-**frontend:**
-```
+frontend:
 - Next.js 14 with TypeScript
 - Tailwind CSS (styling)
 - Axios (HTTP client)
@@ -42,3 +40,8 @@ smart-amazon-analyzer/
     └── package.json
 ```
 
+## run 
+
+```
+docker-compose up
+```
