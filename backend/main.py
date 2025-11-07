@@ -23,7 +23,7 @@ if not OPENROUTER_API_KEY:
 #CORS middleware, enables frontend-backend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[FRONTEND_URL], #next dev server
+    allow_origins=["*"], #allow it all
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

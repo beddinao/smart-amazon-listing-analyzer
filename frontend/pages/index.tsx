@@ -16,7 +16,7 @@ interface AnalysisResult {
   best_practices_used?: string[];
 }
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000';
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:8000';
 
 export default function Home() {
   const [title, setTitle] = useState('');

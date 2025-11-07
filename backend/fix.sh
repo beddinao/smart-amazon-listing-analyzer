@@ -9,7 +9,7 @@ pip install pulsar-client==3.4.0
 pip install watchdog==4.0.1
 pip install mmh3==4.1.0
 pip install tokenizers==0.19.1
-pip install jsonshema
+pip install jsonschema
 pip install opentelemetry-api
 pip install opentelemetry-sdk
 pip install opentelemetry-exporter-otlp-proto-grpc

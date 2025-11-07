@@ -1,0 +1,27 @@
+networks:
+  analyzer:
+    name: analyzer
+
+services:
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - '8020:8020'
+      - '3000:3000'
+    restart: on-failure
+    depends_on:
+      - backend
+    networks:
+      - analyzer
+    env_file: .env
+  backend:
+    container_name: backend
+    build: ./backend
+    ports:
+      - '9020:8020'
+      - '8000:8000'
+    restart: on-failure
+    env_file: .env
+    networks:
+      - analyzer
